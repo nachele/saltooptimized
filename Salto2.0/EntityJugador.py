@@ -20,38 +20,66 @@ class Jugador(Entity):
         self.fuerzaSalto = fuerzaSalto #20
         self.deceleracion = deceleracion #1
         self.choqueCabeza = False
+        self.choquePie = False
+        self.pisoPlataforma = 0
+        self.enPlataforma = False
 
     def movimiento(self, controles):   
         if(controles.W == True):
-           self.y -= self.speed
+           #self.y -= self.speed
+           pass
         if(controles.A == True):
             self.x  -= self.speed
 
         if(controles.S == True):
-            self.y += self.speed
+            #self.y += self.speed
+            pass
 
         if(controles.D == True):
             self.x += self.speed
         # espacio
         if(controles.SP == True):
             self.saltando = True
+    
+    
+    
     def salto(self):
+        if(self.saltando == False and self.enPlataforma == False):
+            self.fuerzaSalto = self.fuerzaSaltoInicial
+        
         if(self.saltando == True and self.choqueCabeza == False):
             self.y -= self.fuerzaSalto
             self.fuerzaSalto -= self.deceleracion
             if(self.fuerzaSalto < - self.fuerzaSaltoInicial ):
                 self.fuerzaSalto = self.fuerzaSaltoInicial
                 self.saltando = False
-        if(self.choqueCabeza == True):
+        elif(self.saltando == True and self.choqueCabeza == True or self.enPlataforma == False ):
+            if(self.y + self.alto < self.suelo):
+                self.y += self.fuerzaSalto
+                self.fuerzaSalto += self.deceleracion
+            if(self.y + self.alto >= self.suelo):
+                self.choqueCabeza = False
                 self.saltando = False
-                if(self.y + self.alto < self.suelo):
-                    self.y += self.fuerzaSalto
-                    self.fuerzaSalto + self.deceleracion
-                elif(self.y + self.alto > self.suelo ):
-                    self.y = self.suelo
-                    self.choqueCabeza = False
-                    self.saltando = False
-                    self.fuerzaSalto = self.fuerzaSaltoInicial
+        if(self.choquePie == True):
+                self.y = self.pisoPlataforma - self.ancho
+                self.saltando = False
+                self.choquePie = False
+                self.fuerzaSalto = self.fuerzaSaltoInicial
+
+    
+       
+        
+
+        # if(self.choqueCabeza == True):
+        #         if(self.y + self.alto < self.suelo):
+        #             self.y += self.fuerzaSalto
+        #             self.fuerzaSalto + self.deceleracion
+        #         elif(self.y + self.alto > self.suelo ):
+        #             self.y = self.suelo
+        #             self.choqueCabeza = False
+        #             self.saltando = False
+        #             self.fuerzaSalto = self.fuerzaSaltoInicial
+        
                     
                 
 
