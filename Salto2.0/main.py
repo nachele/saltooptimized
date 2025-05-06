@@ -1,4 +1,4 @@
-import pygame
+
 from Ventana import *;
 from Entity import *;
 from EntityJugador import *;
@@ -7,7 +7,7 @@ from Colisiones import *;
 pygame.init()
 #creando la ventana 
 screen = Ventana(800,800)
-jugador = Jugador("C:/Users/ignacio/Downloads/carpetaSprite/fantasma.png",0,600,5,50,50)
+jugador = Jugador("C:/Users/ignacio/Downloads/carpetaSprite/fantasma.png",0,600,5,50,50,25,1)
 bloque = Entity("C:/Users/ignacio/Downloads/carpetaSprite/s.png",300,300,60,200)
 colisiones = Colisiones(jugador,bloque,screen)
 controles = Controles()
@@ -23,6 +23,7 @@ while running:
     controles.KeyDetection()
     jugador.pintar(screen.screen)
     jugador.movimiento(controles)
+    jugador.salto()
     bloque.pintar(screen.screen)
     colisiones.ColisionDetection()
 
