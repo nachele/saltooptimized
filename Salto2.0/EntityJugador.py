@@ -7,10 +7,9 @@ class Jugador(Entity):
         super().__init__(imagen,posX,posY,transX,transY)
         self.speed = speed
 
-        self.saltandoArriba = False
-        self.saltandoAbajo = False
-        self.jumpofset = 500
-        self.distanciaSalto = 0
+
+        
+       
         self.ancho = transX
         self.alto = transY
         self.saltando = False
@@ -18,11 +17,14 @@ class Jugador(Entity):
         self.suelo = posY + transY
         self.fuerzaSaltoInicial = fuerzaSalto
         self.fuerzaSalto = fuerzaSalto #20
-        self.deceleracion = deceleracion #1
+        self.deceleracion = 0.3 #1
         self.choqueCabeza = False
         self.choquePie = False
         self.pisoPlataforma = 0
         self.enPlataforma = False
+        self.graviti = 0.1
+        self.gravedadInicial = 0.1
+
 
     def movimiento(self, controles):   
         if(controles.W == True):
@@ -40,48 +42,44 @@ class Jugador(Entity):
         # espacio
         if(controles.SP == True):
             self.saltando = True
+
+
     
-    
-    
-    def salto(self):
-        if(self.saltando == False and self.enPlataforma == False):
+    def gravedad(self):
+        #gravedad actuando sobre el muñeco
+        self.y += self.graviti
+        if(self.y + self.alto < self.suelo):
+            self.graviti += self.deceleracion
+        
+        #si el muñeco esta en el suelo empuja con la misma fuerza que cae
+        if (self.y + self.alto >= self.suelo):
+            
+            self.graviti = self.gravedadInicial
+            self.y -= self.graviti 
+            self.saltando = False
             self.fuerzaSalto = self.fuerzaSaltoInicial
-        
-        if(self.saltando == True and self.choqueCabeza == False):
+
+        #se le suma a graviti un poco de manera que graviti cada vez es mas  y es como si acelerara
+    def salto(self): 
+        #si presiona espacio se mueve hacia arriba con la fuerza de salto
+        # a la cual se le va restando la gravedad y por eso cae.
+        if(self.saltando):
             self.y -= self.fuerzaSalto
-            self.fuerzaSalto -= self.deceleracion
-            if(self.fuerzaSalto < - self.fuerzaSaltoInicial ):
-                self.fuerzaSalto = self.fuerzaSaltoInicial
-                self.saltando = False
-        elif(self.saltando == True and self.choqueCabeza == True or self.enPlataforma == False ):
-            if(self.y + self.alto < self.suelo):
-                self.y += self.fuerzaSalto
-                self.fuerzaSalto += self.deceleracion
-            if(self.y + self.alto >= self.suelo):
-                self.choqueCabeza = False
-                self.saltando = False
-        if(self.choquePie == True):
-                self.y = self.pisoPlataforma - self.ancho
-                self.saltando = False
-                self.choquePie = False
-                self.fuerzaSalto = self.fuerzaSaltoInicial
 
-    
-       
-        
+    def ColisionPlataforma(self):
+        if(not self.choqueCabeza):
+            self.salto()
+        else:
+           self.fuerzaSalto = 0
 
-        # if(self.choqueCabeza == True):
-        #         if(self.y + self.alto < self.suelo):
-        #             self.y += self.fuerzaSalto
-        #             self.fuerzaSalto + self.deceleracion
-        #         elif(self.y + self.alto > self.suelo ):
-        #             self.y = self.suelo
-        #             self.choqueCabeza = False
-        #             self.saltando = False
-        #             self.fuerzaSalto = self.fuerzaSaltoInicial
         
-                    
-                
+        
+               
+        
+        
+        
+      
+        
 
                  
 

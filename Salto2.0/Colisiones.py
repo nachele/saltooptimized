@@ -10,7 +10,7 @@ class Colisiones:
             borde = 20
             dentrodeobjeto = 4
             #choque con el bloque en x 
-            if(self.jugador.y <= self.bloque.y + self.bloque.alto and self.jugador.y + self.jugador.alto >= self.bloque.y):   
+            if(self.jugador.y <= self.bloque.y + self.bloque.alto - 10 and self.jugador.y + self.jugador.alto >= self.bloque.y + 10):   
                 if(self.jugador.x  + self.jugador.ancho >= self.bloque.x + dentrodeobjeto and self.jugador.x + self.jugador.ancho <= self.bloque.x + borde):
                     self.jugador.x -= self.jugador.speed
                     
@@ -25,10 +25,11 @@ class Colisiones:
                     #chocando cabeza por debajo del bloque
                     self.jugador.y += self.jugador.speed 
                     self.jugador.choqueCabeza = True
+                else:
+                     self.jugador.choqueCabeza = False
                 if(self.jugador.y + self.jugador.alto >= self.bloque.y + dentrodeobjeto  and self.jugador.y + self.jugador.alto <= self.bloque.y  + borde ):
                     #chocando pies por encima del bloque
                     self.jugador.enPlataforma = True
-                    self.jugador.y -= self.jugador.speed
                     self.jugador.choquePie = True
                     self.jugador.pisoPlataforma = self.bloque.y
             else:
